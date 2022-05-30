@@ -1,8 +1,7 @@
 name: Lint, Build and Test
 
 on:
-  push:
-    branches: [main]
+  # comment
   pull_request:
     branches: [main]
 
