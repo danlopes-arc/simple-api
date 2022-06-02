@@ -16,7 +16,7 @@ import { AppService } from './app.service';
       },
     ]),
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'public'),
+      rootPath: join(__dirname, 'public'),
     }),
   ],
   controllers: [AppController],
