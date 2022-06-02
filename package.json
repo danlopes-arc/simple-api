@@ -7,8 +7,8 @@
     "apps/*"
   ],
   "scripts": {
-    "build": "yarn workspaces run build && copyfiles apps/client/build/* apps/server/dist/public",
     "start": "yarn workspace server start:prod",
+    "build": "yarn workspaces run build && copyfiles apps/client/build/* apps/server/dist/public",
     "lint": "yarn workspaces run lint",
     "test": "yarn workspaces run test"
   },
