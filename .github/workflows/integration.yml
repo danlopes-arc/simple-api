@@ -1,4 +1,4 @@
-name: Lint, Build and Test
+name: Integration
 
 on:
   pull_request:
@@ -15,6 +15,12 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16.x
+
+      - name: Assure yarn.lock is present
+        run: test -f yarn.lock
+
+      - name: Assure package-lock.json is absent
+        run: "[ ! -f package-lock.json ]"
 
       - name: Install dependencies
         run: yarn install --pure-lockfile
