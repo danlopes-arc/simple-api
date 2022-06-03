@@ -6,8 +6,8 @@ export const App: FC = () => {
 
   useEffect(() => {
     const fetchMessage = async () => {
-      const res = await axios.get<{ message: string }>('api/message')
-      setMessage(res.data.message)
+      const res = await axios.get<string>('api/message')
+      setMessage(res.data)
     }
     fetchMessage()
   }, [])
