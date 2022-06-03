@@ -3,8 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { RouterModule } from '@nestjs/core';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { MessageModule } from './message/message.module';
 
 @Module({
   imports: [
@@ -13,13 +12,18 @@ import { AppService } from './app.service';
       {
         path: 'api',
         module: AppModule,
+        children: [
+          {
+            path: '/',
+            module: MessageModule,
+          },
+        ],
       },
     ]),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, 'public'),
     }),
+    MessageModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}
