@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
 import { RouterModule } from '@nestjs/core';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { MessageModule } from './message/message.module';
+import { AppConfigModule } from './app-config/app-config.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    AppConfigModule,
     RouterModule.register([
       {
         path: 'api',
