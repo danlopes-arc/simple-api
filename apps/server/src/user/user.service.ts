@@ -18,12 +18,16 @@ export class UserService {
     return this.userRepository.save(user);
   }
 
-  findOne(id: number): Promise<User | null> {
+  findById(id: number): Promise<User | null> {
     return this.userRepository.findOneBy({ id });
   }
 
+  findByUsername(username: string): Promise<User | null> {
+    return this.userRepository.findOneBy({ username });
+  }
+
   async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
-    const user = await this.findOne(id);
+    const user = await this.findById(id);
 
     if (user == null) {
       throw new NotFoundException();
@@ -34,7 +38,7 @@ export class UserService {
   }
 
   async remove(id: number) {
-    const user = await this.findOne(id);
+    const user = await this.findById(id);
 
     if (user == null) {
       throw new NotFoundException();

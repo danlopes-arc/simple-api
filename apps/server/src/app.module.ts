@@ -7,6 +7,7 @@ import { AppConfigModule } from './app-config/app-config.module';
 import { MessageModule } from './message/message.module';
 import { User } from './user/user.entity';
 import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -23,6 +24,10 @@ import { UserModule } from './user/user.module';
             path: '/',
             module: UserModule,
           },
+          {
+            path: '/',
+            module: AuthModule,
+          },
         ],
       },
     ]),
@@ -38,6 +43,7 @@ import { UserModule } from './user/user.module';
     AppConfigModule,
     MessageModule,
     UserModule,
+    AuthModule,
   ],
 })
 export class AppModule {}
