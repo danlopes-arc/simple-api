@@ -4,10 +4,11 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
 import { AppConfigModule } from './app-config/app-config.module';
-import { MessageModule } from './message/message.module';
-import { User } from './user/user.entity';
-import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { DatabaseValidationModule } from './database-validation/database-validation.module';
+import { MessageModule } from './message/message.module';
+import { UserModule } from './user/user.module';
+import { entities } from './utils/entities';
 
 @Module({
   imports: [
@@ -39,12 +40,13 @@ import { AuthModule } from './auth/auth.module';
       type: 'sqlite',
       database: 'simple-app-ci-cd.db',
       synchronize: true,
-      entities: [User],
+      entities,
     }),
     AppConfigModule,
     MessageModule,
     UserModule,
     AuthModule,
+    DatabaseValidationModule,
   ],
 })
 export class AppModule {}
