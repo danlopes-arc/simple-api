@@ -26,6 +26,14 @@ export class UserService {
     return this.userRepository.findOneBy({ username });
   }
 
+  async findByCredentials(username: string, password: string): Promise<User | null> {
+    const user = await this.findByUsername(username);
+    if (user && user.passwordHash === password) {
+      return user;
+    }
+    return null;
+  }
+
   async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
     const user = await this.findById(id);
 
