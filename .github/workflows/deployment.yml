@@ -30,8 +30,5 @@ jobs:
       - name: Add Heroku remote repo
         run: heroku git:remote -a simple-app-cicd
 
-      - name: Set env
-        run: heroku config:set JWT_SECRET=${{ secrets.JWT_SECRET }}
-
       - name: Push to Heroku
         run: git push heroku main --force
