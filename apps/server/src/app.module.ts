@@ -33,6 +33,7 @@ import { AuthModule } from './auth/auth.module';
     ]),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, 'public'),
+      exclude: ['/api/*'],
     }),
     TypeOrmModule.forRoot({
       type: 'sqlite',
