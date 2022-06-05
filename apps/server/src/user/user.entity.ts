@@ -12,10 +12,18 @@ export class User {
   @Column()
   passwordHash!: string;
 
+  @Column()
+  name!: string;
+
+  @Column()
+  age!: number;
+
   get dto(): UserDto {
     return {
       id: this.id,
       username: this.username,
+      age: this.age,
+      name: this.name,
     };
   }
 }
