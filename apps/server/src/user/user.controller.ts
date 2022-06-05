@@ -8,11 +8,15 @@ import {
   NotFoundException,
   Get,
   ParseIntPipe,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserDto } from './dto/user.dto';
+import { AuthUser } from 'src/auth/auth-user.decorator';
+import { User } from './user.entity';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('users')
 export class UserController {
@@ -21,6 +25,12 @@ export class UserController {
   @Post()
   async create(@Body() createUserDto: CreateUserDto): Promise<UserDto> {
     const user = await this.userService.create(createUserDto);
+    return user.dto;
+  }
+
+  @Get('current')
+  @UseGuards(JwtAuthGuard)
+  async current(@AuthUser() user: User): Promise<UserDto> {
     return user.dto;
   }
 
