@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { parseClassFactory } from 'src/utils/class-parser';
+import { parseClassFactory } from '../utils/class-parser';
 import { AppConfigService } from './app-config.service';
 import { AppEnv } from './app.env';
 
