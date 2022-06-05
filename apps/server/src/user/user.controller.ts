@@ -11,6 +11,7 @@ import {
   UseGuards,
   UsePipes,
   ValidationPipe,
+  Put,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -19,6 +20,7 @@ import { UserDto } from './dto/user.dto';
 import { AuthUser } from '../auth/auth-user.decorator';
 import { User } from './user.entity';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { UpdateUsernameDto } from './dto/update-username.dto';
 
 @Controller('users')
 export class UserController {
@@ -33,7 +35,7 @@ export class UserController {
 
   @Get('current')
   @UseGuards(JwtAuthGuard)
-  async current(@AuthUser() user: User): Promise<UserDto> {
+  async findCurrent(@AuthUser() user: User): Promise<UserDto> {
     return user.dto;
   }
 
@@ -47,6 +49,7 @@ export class UserController {
   }
 
   @Patch(':id')
+  @UseGuards(JwtAuthGuard)
   @UsePipes(new ValidationPipe({ transform: true }))
   async update(
     @Param('id', ParseIntPipe) id: number,
@@ -57,7 +60,20 @@ export class UserController {
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard)
   async remove(@Param('id', ParseIntPipe) id: number) {
     await this.userService.remove(id);
+  }
+
+  @Put(':id/username')
+  @UseGuards(JwtAuthGuard)
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async updateUsername(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateUsernameDto: UpdateUsernameDto
+  ): Promise<UserDto> {
+    console.log(updateUsernameDto);
+    const user = await this.userService.update(id, updateUsernameDto);
+    return user.dto;
   }
 }

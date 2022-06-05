@@ -1,9 +1,7 @@
 import { Exclude, Expose } from 'class-transformer';
 
 @Exclude()
-export class UpdateUserDto {
+export class UpdateUsernameDto {
   @Expose()
-  name!: string;
-  @Expose()
-  age!: number;
+  username!: string;
 }
