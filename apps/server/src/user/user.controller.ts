@@ -1,33 +1,33 @@
 import {
-  Controller,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
-  NotFoundException,
   Get,
+  NotFoundException,
+  Param,
   ParseIntPipe,
+  Patch,
+  Post,
+  Put,
   UseGuards,
   UsePipes,
-  ValidationPipe,
-  Put,
 } from '@nestjs/common';
-import { UserService } from './user.service';
+import { AuthUser } from '../auth/auth-user.decorator';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { ParsingPipe } from '../utils/parsing.pipe';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { UserDto } from './dto/user.dto';
-import { AuthUser } from '../auth/auth-user.decorator';
-import { User } from './user.entity';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { UpdateUsernameDto } from './dto/update-username.dto';
+import { UserDto } from './dto/user.dto';
+import { User } from './user.entity';
+import { UserService } from './user.service';
 
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
-  @UsePipes(new ValidationPipe({ transform: true }))
+  @UsePipes(ParsingPipe)
   async create(@Body() createUserDto: CreateUserDto): Promise<UserDto> {
     const user = await this.userService.create(createUserDto);
     return user.dto;
@@ -50,7 +50,7 @@ export class UserController {
 
   @Patch(':id')
   @UseGuards(JwtAuthGuard)
-  @UsePipes(new ValidationPipe({ transform: true }))
+  @UsePipes(ParsingPipe)
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateUserDto: UpdateUserDto
@@ -67,7 +67,7 @@ export class UserController {
 
   @Put(':id/username')
   @UseGuards(JwtAuthGuard)
-  @UsePipes(new ValidationPipe({ transform: true }))
+  @UsePipes(ParsingPipe)
   async updateUsername(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateUsernameDto: UpdateUsernameDto
