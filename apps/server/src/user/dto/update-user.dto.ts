@@ -4,4 +4,8 @@ import { Exclude, Expose } from 'class-transformer';
 export class UpdateUserDto {
   @Expose()
   username!: string;
+  @Expose()
+  name!: string;
+  @Expose()
+  age!: number;
 }

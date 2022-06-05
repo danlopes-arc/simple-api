@@ -10,10 +10,9 @@ export class UserService {
   constructor(@InjectRepository(User) private readonly userRepository: Repository<User>) {}
 
   create(createUserDto: CreateUserDto): Promise<User> {
-    const { username, password } = createUserDto;
     const user = this.userRepository.create({
-      username,
-      passwordHash: password,
+      ...createUserDto,
+      passwordHash: createUserDto.password,
     });
     return this.userRepository.save(user);
   }

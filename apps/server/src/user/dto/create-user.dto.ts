@@ -6,4 +6,8 @@ export class CreateUserDto {
   username!: string;
   @Expose()
   password!: string;
+  @Expose()
+  name!: string;
+  @Expose()
+  age!: number;
 }
