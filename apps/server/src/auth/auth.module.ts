@@ -6,6 +6,7 @@ import { AppConfigService } from 'src/app-config/app-config.service';
 import { UserModule } from 'src/user/user.module';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
+import { JwtStrategy } from './jwt.strategy';
 import { LocalStrategy } from './local.strategy';
 
 @Module({
@@ -18,10 +19,11 @@ import { LocalStrategy } from './local.strategy';
         signOptions: { expiresIn: '60s' },
       }),
     }),
+    AppConfigModule,
     UserModule,
     PassportModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, LocalStrategy],
+  providers: [AuthService, LocalStrategy, JwtStrategy],
 })
 export class AuthModule {}
