@@ -5,16 +5,22 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UpdateUsernameDto } from './dto/update-username.dto';
 import { User } from './user.entity';
+import { hash, compare } from 'bcrypt';
 
 @Injectable()
 export class UserService {
   constructor(@InjectRepository(User) private readonly userRepository: Repository<User>) {}
 
-  create(createUserDto: CreateUserDto): Promise<User> {
+  async create(createUserDto: CreateUserDto): Promise<User> {
+    const { password, ...passwordlessCreateUserDto } = createUserDto;
+
+    const passwordHash = await hash(password, 12);
+
     const user = this.userRepository.create({
-      ...createUserDto,
-      passwordHash: createUserDto.password,
+      ...passwordlessCreateUserDto,
+      passwordHash,
     });
+
     return this.userRepository.save(user);
   }
 
@@ -28,7 +34,7 @@ export class UserService {
 
   async findByCredentials(username: string, password: string): Promise<User | null> {
     const user = await this.findByUsername(username);
-    if (user && user.passwordHash === password) {
+    if (user && (await compare(password, user.passwordHash))) {
       return user;
     }
     return null;
