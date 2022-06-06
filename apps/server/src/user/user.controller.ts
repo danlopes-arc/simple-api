@@ -56,13 +56,22 @@ export class UserController {
     @Body() updateUserDto: UpdateUserDto
   ): Promise<UserDto> {
     const user = await this.userService.update(id, updateUserDto);
+
+    if (user == null) {
+      throw new NotFoundException();
+    }
+
     return user.dto;
   }
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
   async remove(@Param('id', ParseIntPipe) id: number) {
-    await this.userService.remove(id);
+    const existed = await this.userService.remove(id);
+
+    if (!existed) {
+      throw new NotFoundException();
+    }
   }
 
   @Put(':id/username')
@@ -72,8 +81,12 @@ export class UserController {
     @Param('id', ParseIntPipe) id: number,
     @Body() updateUsernameDto: UpdateUsernameDto
   ): Promise<UserDto> {
-    console.log(updateUsernameDto);
     const user = await this.userService.update(id, updateUsernameDto);
+
+    if (user == null) {
+      throw new NotFoundException();
+    }
+
     return user.dto;
   }
 }
