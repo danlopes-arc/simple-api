@@ -24,6 +24,7 @@ export class User {
       username: this.username,
       age: this.age,
       name: this.name,
+      _: () => 'user.dto',
     };
   }
 }
