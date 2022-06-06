@@ -1,11 +1,11 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { compare, hash } from 'bcrypt';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UpdateUsernameDto } from './dto/update-username.dto';
 import { User } from './user.entity';
-import { hash, compare } from 'bcrypt';
 
 @Injectable()
 export class UserService {
@@ -34,30 +34,35 @@ export class UserService {
 
   async findByCredentials(username: string, password: string): Promise<User | null> {
     const user = await this.findByUsername(username);
-    if (user && (await compare(password, user.passwordHash))) {
+
+    if (user != null && (await compare(password, user.passwordHash))) {
       return user;
     }
+
     return null;
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto | UpdateUsernameDto): Promise<User> {
-    const user = await this.findById(id);
-
-    if (user == null) {
-      throw new NotFoundException();
-    }
-
+  /**
+   * @returns the entity if it was found, `null` otherwise
+   */
+  async update(id: number, updateUserDto: UpdateUserDto | UpdateUsernameDto): Promise<User | null> {
     await this.userRepository.update({ id }, updateUserDto);
-    return Object.assign(user, updateUserDto);
+
+    return await this.findById(id);
   }
 
-  async remove(id: number) {
-    const user = await this.findById(id);
+  /**
+   * @returns `true` if the entity was found, `false` otherwise
+   */
+  async remove(id: number): Promise<boolean> {
+    const user = await this.userRepository.findOneBy({ id });
 
     if (user == null) {
-      throw new NotFoundException();
+      return false;
     }
 
-    return this.userRepository.delete({ id });
+    await this.userRepository.delete({ id });
+
+    return true;
   }
 }
