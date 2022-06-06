@@ -42,13 +42,14 @@ export class UserService {
     return null;
   }
 
-  /**
-   * @returns the entity if it was found, `null` otherwise
-   */
   async update(id: number, updateUserDto: UpdateUserDto | UpdateUsernameDto): Promise<User | null> {
-    await this.userRepository.update({ id }, updateUserDto);
+    const user = await this.findById(id);
 
-    return await this.findById(id);
+    if (user == null) {
+      return null;
+    }
+
+    return await this.userRepository.save(Object.assign(user, updateUserDto));
   }
 
   /**
