@@ -15,10 +15,7 @@ import {
 import { AuthUser } from '../auth/auth-user.decorator';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { ParsingPipe } from '../utils/parsing.pipe';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { UpdateUsernameDto } from './dto/update-username.dto';
-import { UserDto } from './dto/user.dto';
+import { CreateUserDto, UpdateUserDto, UpdateUsernameDto, UserDto } from './user.dto';
 import { User } from './user.entity';
 import { UserService } from './user.service';
 
