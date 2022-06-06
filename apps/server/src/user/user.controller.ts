@@ -6,7 +6,6 @@ import {
   NotFoundException,
   Param,
   ParseIntPipe,
-  Patch,
   Post,
   Put,
   UseGuards,
@@ -45,7 +44,7 @@ export class UserController {
     return user.dto;
   }
 
-  @Patch(':id')
+  @Put(':id')
   @UseGuards(JwtAuthGuard)
   @UsePipes(ParsingPipe)
   async update(
